@@ -1,0 +1,6 @@
+data/progress.json
+__pycache__/
+*.pyc
+.env
+*.wav
+*.mp3
