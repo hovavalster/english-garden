@@ -152,27 +152,69 @@ CLOTHES = [
     {"text": "scarf",   "emoji": "🧣"},
     {"text": "boots",   "emoji": "👢"},
 ]
+VEHICLES = [
+    {"text": "car",        "emoji": "🚗"},
+    {"text": "bus",        "emoji": "🚌"},
+    {"text": "train",      "emoji": "🚂"},
+    {"text": "plane",      "emoji": "✈️"},
+    {"text": "bike",       "emoji": "🚲"},
+    {"text": "truck",      "emoji": "🚚"},
+    {"text": "boat",       "emoji": "⛵"},
+    {"text": "rocket",     "emoji": "🚀"},
+    {"text": "helicopter", "emoji": "🚁"},
+    {"text": "tractor",    "emoji": "🚜"},
+    {"text": "taxi",       "emoji": "🚕"},
+    {"text": "fire truck", "emoji": "🚒"},
+]
+WEATHER = [
+    {"text": "sun",      "emoji": "☀️"},
+    {"text": "rain",     "emoji": "🌧️"},
+    {"text": "snow",     "emoji": "❄️"},
+    {"text": "cloud",    "emoji": "☁️"},
+    {"text": "rainbow",  "emoji": "🌈"},
+    {"text": "wind",     "emoji": "💨"},
+    {"text": "thunder",  "emoji": "⛈️"},
+    {"text": "fog",      "emoji": "🌫️"},
+    {"text": "hot",      "emoji": "🥵"},
+    {"text": "cold",     "emoji": "🥶"},
+    {"text": "storm",    "emoji": "🌪️"},
+]
 SENTENCES = [
-    {"text": "I love you so much",           "emoji": "❤️"},
-    {"text": "Good morning my dear friend",  "emoji": "☀️"},
-    {"text": "Good night sleep tight",       "emoji": "🌙"},
-    {"text": "Thank you very much",          "emoji": "🙏"},
-    {"text": "I am very happy today",        "emoji": "😊"},
-    {"text": "I am hungry can we eat",       "emoji": "🍽️"},
-    {"text": "I am tired and want to sleep", "emoji": "😴"},
-    {"text": "Can we please go play now",    "emoji": "🎮"},
-    {"text": "Can I have some water please", "emoji": "💧"},
-    {"text": "You are so very nice",         "emoji": "🌟"},
-    {"text": "I want to go outside now",     "emoji": "🌳"},
-    {"text": "Please read me a book",        "emoji": "📖"},
-    {"text": "I want a big warm hug",        "emoji": "🤗"},
-    {"text": "The sun is shining today",     "emoji": "🌞"},
-    {"text": "I see a pretty butterfly",     "emoji": "🦋"},
-    {"text": "Can you help me please",       "emoji": "🙋"},
-    {"text": "I like to play with you",      "emoji": "🫶"},
-    {"text": "The dog is so cute",           "emoji": "🐶"},
-    {"text": "Let us go to the park",        "emoji": "🌿"},
-    {"text": "I love to eat apples",         "emoji": "🍎"},
+    {"text": "I love you so much",              "emoji": "❤️"},
+    {"text": "Good morning my dear friend",     "emoji": "☀️"},
+    {"text": "Good night sleep tight",          "emoji": "🌙"},
+    {"text": "Thank you very much",             "emoji": "🙏"},
+    {"text": "I am very happy today",           "emoji": "😊"},
+    {"text": "I am hungry can we eat",          "emoji": "🍽️"},
+    {"text": "I am tired and want to sleep",    "emoji": "😴"},
+    {"text": "Can we please go play now",       "emoji": "🎮"},
+    {"text": "Can I have some water please",    "emoji": "💧"},
+    {"text": "You are so very nice",            "emoji": "🌟"},
+    {"text": "I want to go outside now",        "emoji": "🌳"},
+    {"text": "Please read me a book",           "emoji": "📖"},
+    {"text": "I want a big warm hug",           "emoji": "🤗"},
+    {"text": "The sun is shining today",        "emoji": "🌞"},
+    {"text": "I see a pretty butterfly",        "emoji": "🦋"},
+    {"text": "Can you help me please",          "emoji": "🙋"},
+    {"text": "I like to play with you",         "emoji": "🫶"},
+    {"text": "The dog is so cute",              "emoji": "🐶"},
+    {"text": "Let us go to the park",           "emoji": "🌿"},
+    {"text": "I love to eat apples",            "emoji": "🍎"},
+    {"text": "Can we bake some cookies",        "emoji": "🍪"},
+    {"text": "I want to play with my toys",     "emoji": "🧸"},
+    {"text": "Look at the pretty rainbow",      "emoji": "🌈"},
+    {"text": "I love my family so much",        "emoji": "👨‍👩‍👧"},
+    {"text": "Can we watch a movie together",   "emoji": "🎬"},
+    {"text": "I want to dance and sing",        "emoji": "🎵"},
+    {"text": "The kitty is soft and fluffy",    "emoji": "🐱"},
+    {"text": "We are going to the beach",       "emoji": "🏖️"},
+    {"text": "I love to jump and run",          "emoji": "🏃"},
+    {"text": "The bird is singing in the tree", "emoji": "🐦"},
+    {"text": "I found a shiny little star",     "emoji": "⭐"},
+    {"text": "Can I have a cookie please",      "emoji": "🍪"},
+    {"text": "I see a big fluffy cloud",        "emoji": "☁️"},
+    {"text": "Let us pick some flowers",        "emoji": "🌸"},
+    {"text": "I like the smell of rain",        "emoji": "🌧️"},
 ]
 
 ALL_CATEGORIES = {
@@ -185,6 +227,8 @@ ALL_CATEGORIES = {
     "😊 Emotions":  EMOTIONS,
     "🍓 Fruits":    FRUITS,
     "👕 Clothes":   CLOTHES,
+    "🚗 Vehicles":  VEHICLES,
+    "🌦️ Weather":   WEATHER,
     "💬 Sentences": SENTENCES,
 }
 
@@ -299,12 +343,67 @@ STORY_SLEEP = [
      "praise": "🎉 Sweet dreams! Goodnight! 💤", "final": True},
 ]
 
+STORY_BIRTHDAY = [
+    {"text": "cake",    "emoji": "🎂",  "scene": "🎈🎂🎈",
+     "narration": "Today is your birthday! 🎉\nThere is a big, beautiful cake waiting for you!",
+     "praise": "A yummy birthday cake! 🎂"},
+    {"text": "candles", "emoji": "🕯️",  "scene": "✨🕯️✨",
+     "narration": "We put five little candles on the cake.\nOne... two... three... four... five!",
+     "praise": "So many candles! 🕯️"},
+    {"text": "wish",    "emoji": "⭐",  "scene": "⭐💫⭐",
+     "narration": "Close your eyes and make a secret wish...\nShhh, don't tell anyone!",
+     "praise": "Your wish is coming true! ⭐"},
+    {"text": "blow",    "emoji": "💨",  "scene": "🕯️💨🕯️",
+     "narration": "Take a big, deep breath...\nNow BLOW out all the candles!",
+     "praise": "You blew them all out! 💨"},
+    {"text": "friends", "emoji": "👧",  "scene": "👧👦👶",
+     "narration": "All your friends come running in!\nThey shout: Surprise! We love you!",
+     "praise": "Your friends are here! 🎉"},
+    {"text": "happy",   "emoji": "🥳",  "scene": "🎉🥳🎉",
+     "narration": "Everyone sings: Happy Birthday to you! 🎵\nIt is the most wonderful day ever!",
+     "praise": "🎉 Happy Birthday! 🥳", "final": True},
+]
+
+STORY_SPACE = [
+    {"text": "stars",   "emoji": "⭐",  "scene": "🌌⭐🌌",
+     "narration": "Look up at the night sky!\nSo many beautiful, twinkling stars!",
+     "praise": "Stars! So many stars! ⭐"},
+    {"text": "moon",    "emoji": "🌕",  "scene": "🌙✨🌙",
+     "narration": "The big round moon is glowing bright.\nIt lights up the whole dark sky.",
+     "praise": "The beautiful moon! 🌕"},
+    {"text": "rocket",  "emoji": "🚀",  "scene": "🚀💨🚀",
+     "narration": "WHOOOOSH! A rocket blasts off!\n3... 2... 1... BLAST OFF! 🚀",
+     "praise": "The rocket is flying! 🚀"},
+    {"text": "planet",  "emoji": "🪐",  "scene": "🪐⭐🪐",
+     "narration": "The rocket flies past a giant planet\nwith beautiful colourful rings around it!",
+     "praise": "A beautiful planet! 🪐"},
+    {"text": "alien",   "emoji": "👽",  "scene": "🛸👽🛸",
+     "narration": "Suddenly... a little green alien\nwaves hello from a tiny spaceship!",
+     "praise": "A friendly alien! 👽"},
+    {"text": "earth",   "emoji": "🌍",  "scene": "🌍💫🌍",
+     "narration": "Time to fly back home.\nThere it is — our beautiful blue Earth! 🌍",
+     "praise": "🎉 We're home! Our beautiful Earth! 🌍", "final": True},
+]
+
 ALL_STORIES = {
     "caterpillar": (STORY_CATERPILLAR, "🐛 Caterpillar"),
     "garden":      (STORY_GARDEN,      "🌱 Garden"),
     "farm":        (STORY_FARM,        "🐣 Farm"),
     "ocean":       (STORY_OCEAN,       "🌊 Ocean"),
     "sleep":       (STORY_SLEEP,       "🌙 Bedtime"),
+    "birthday":    (STORY_BIRTHDAY,    "🎂 Birthday"),
+    "space":       (STORY_SPACE,       "🚀 Space"),
+}
+
+# Per-story card background gradient and accent color
+STORY_COLORS = {
+    "caterpillar": ("linear-gradient(160deg, #F1FFF4 0%, #D6F5DF 100%)", "#2E7D32"),
+    "garden":      ("linear-gradient(160deg, #F9FFE8 0%, #E8F5C8 100%)", "#558B2F"),
+    "farm":        ("linear-gradient(160deg, #FFFEF0 0%, #FFF3B0 100%)", "#F57F17"),
+    "ocean":       ("linear-gradient(160deg, #EFF8FF 0%, #CCE8FF 100%)", "#0277BD"),
+    "sleep":       ("linear-gradient(160deg, #F5F0FF 0%, #E4D8F8 100%)", "#6A1B9A"),
+    "birthday":    ("linear-gradient(160deg, #FFF0F8 0%, #FFD6E8 100%)", "#AD1457"),
+    "space":       ("linear-gradient(160deg, #F0EEFF 0%, #DDD8F8 100%)", "#283593"),
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -432,7 +531,45 @@ def get_word_of_the_day():
 # ══════════════════════════════════════════════════════════════════════════════
 # AUDIO — TTS
 # ══════════════════════════════════════════════════════════════════════════════
-def _speak_windows(text):
+def _speak_edge(text, voice="en-US-AnaNeural"):
+    """Microsoft Edge neural TTS — natural child voice, free, needs internet."""
+    import asyncio
+    import threading
+    import edge_tts
+
+    result = [None]
+
+    async def _run():
+        communicate = edge_tts.Communicate(text, voice)
+        buf = io.BytesIO()
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                buf.write(chunk["data"])
+        result[0] = buf.getvalue()
+
+    def _thread():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(_run())
+        finally:
+            loop.close()
+
+    t = threading.Thread(target=_thread)
+    t.start()
+    t.join(timeout=15)
+    return result[0]  # mp3 bytes, or None on failure
+
+
+def _speak_gtts(text):
+    from gtts import gTTS
+    buf = io.BytesIO()
+    gTTS(text=text, lang="en", slow=True).write_to_fp(buf)
+    return buf.getvalue()
+
+
+def _speak_windows_sapi(text):
+    """Fallback: Windows SAPI (robotic but offline)."""
     tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
     tmp_path = tmp.name
     tmp.close()
@@ -457,21 +594,29 @@ def _speak_windows(text):
             os.unlink(tmp_path)
 
 
-def _speak_gtts(text):
-    from gtts import gTTS
-    buf = io.BytesIO()
-    gTTS(text=text, lang="en", slow=True).write_to_fp(buf)
-    return buf.getvalue()
-
-
 @st.cache_data(show_spinner=False)
 def speak(text):
-    return _speak_windows(text) if IS_WINDOWS else _speak_gtts(text)
+    """Returns (audio_bytes, mime_type). Tries Edge neural → gTTS → SAPI."""
+    try:
+        audio = _speak_edge(text)
+        if audio:
+            return audio, "audio/mpeg"
+    except Exception:
+        pass
+    try:
+        return _speak_gtts(text), "audio/mpeg"
+    except Exception:
+        pass
+    return _speak_windows_sapi(text), "audio/wav"
 
 
-def autoplay(audio_bytes, mime=None):
-    if mime is None:
-        mime = AUDIO_MIME
+def autoplay(audio_or_tuple, mime=None):
+    if isinstance(audio_or_tuple, tuple):
+        audio_bytes, mime = audio_or_tuple
+    else:
+        audio_bytes = audio_or_tuple
+        if mime is None:
+            mime = AUDIO_MIME
     st.session_state.setdefault("play_count", 0)
     st.session_state.play_count += 1
     b64 = base64.b64encode(audio_bytes).decode()
@@ -483,16 +628,179 @@ def autoplay(audio_bytes, mime=None):
     )
 
 
+def speak_instant(text):
+    """Speak text using the browser's built-in speech engine — zero latency."""
+    safe = text.replace("\\", "\\\\").replace("'", "\\'")
+    js = f"""
+    (function() {{
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance('{safe}');
+        u.lang = 'en-US';
+        u.rate = 0.82;
+        u.pitch = 1.05;
+        function go() {{
+            var voices = window.speechSynthesis.getVoices();
+            var en = voices.filter(function(v) {{ return v.lang.startsWith('en'); }});
+            var pick = en.find(function(v) {{
+                return v.name.indexOf('Zira') >= 0 || v.name.indexOf('Aria') >= 0 ||
+                       v.name.indexOf('Jenny') >= 0 || v.name.indexOf('Google') >= 0 ||
+                       v.name.indexOf('Ana') >= 0;
+            }}) || en[0];
+            if (pick) u.voice = pick;
+            window.speechSynthesis.speak(u);
+        }}
+        if (window.speechSynthesis.getVoices().length > 0) {{ go(); }}
+        else {{ window.speechSynthesis.onvoiceschanged = go; }}
+    }})();
+    """
+    components.html(f"<script>{js}</script>", height=0)
+
+
+def speak_story_step(narration, word):
+    """Speak story narration then the target word after a short pause."""
+    safe_nar = narration.replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ").replace('"', '\\"')
+    safe_word = word.replace("'", "\\'")
+    js = f"""
+    (function() {{
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        function getVoice() {{
+            var voices = window.speechSynthesis.getVoices();
+            var en = voices.filter(function(v) {{ return v.lang.startsWith('en'); }});
+            return en.find(function(v) {{
+                return v.name.indexOf('Zira') >= 0 || v.name.indexOf('Aria') >= 0 ||
+                       v.name.indexOf('Jenny') >= 0 || v.name.indexOf('Google') >= 0 ||
+                       v.name.indexOf('Ana') >= 0;
+            }}) || en[0];
+        }}
+        function speak(text, rate, onEnd) {{
+            var u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US'; u.rate = rate; u.pitch = 1.05;
+            var v = getVoice(); if (v) u.voice = v;
+            if (onEnd) u.onend = onEnd;
+            window.speechSynthesis.speak(u);
+        }}
+        function go() {{
+            speak('{safe_nar}', 0.78, function() {{
+                setTimeout(function() {{ speak('{safe_word}', 0.72, null); }}, 500);
+            }});
+        }}
+        if (window.speechSynthesis.getVoices().length > 0) {{ go(); }}
+        else {{ window.speechSynthesis.onvoiceschanged = go; }}
+    }})();
+    """
+    components.html(f"<script>{js}</script>", height=0)
+
+
+def animated_scene(scene_str):
+    """Wrap each emoji in the scene string in a span with staggered bounce animation."""
+    spans = ""
+    delay = 0.0
+    for ch in scene_str:
+        if ch.strip():
+            spans += (
+                f'<span style="display:inline-block;'
+                f'animation:scene-float 2.8s ease-in-out {delay:.2f}s infinite;">'
+                f'{ch}</span>'
+            )
+            delay += 0.25
+        else:
+            spans += ch
+    return spans
+
+
+def inject_mic_listener():
+    """JS that shows a 'Listening...' overlay when the mic button is tapped."""
+    components.html("""
+    <script>
+    (function() {
+        function attach() {
+            var frames = window.parent.document.querySelectorAll('iframe');
+            frames.forEach(function(frame) {
+                try {
+                    var d = frame.contentDocument;
+                    if (!d) return;
+                    var btn = d.querySelector('button');
+                    if (btn && !btn._gardenAttached) {
+                        btn._gardenAttached = true;
+                        btn.addEventListener('click', function() {
+                            var pd = window.parent.document;
+                            var existing = pd.getElementById('mic-listen-ov');
+                            if (existing) { existing.remove(); return; }
+                            var el = pd.createElement('div');
+                            el.id = 'mic-listen-ov';
+                            el.style.cssText = [
+                                'position:fixed', 'bottom:110px', 'left:50%',
+                                'transform:translateX(-50%)',
+                                'background:rgba(193,122,74,0.92)', 'color:white',
+                                'border-radius:24px', 'padding:14px 32px',
+                                'font-size:22px', 'font-weight:800',
+                                'z-index:99998', 'font-family:Nunito,sans-serif',
+                                'pointer-events:none', 'text-align:center',
+                                'box-shadow:0 4px 20px rgba(0,0,0,0.2)'
+                            ].join(';');
+                            el.innerHTML = '🎤 Listening&hellip; say the word!';
+                            pd.body.appendChild(el);
+                            setTimeout(function() { if (el.parentNode) el.remove(); }, 5000);
+                        });
+                    }
+                } catch(e) {}
+            });
+        }
+        setTimeout(attach, 400);
+        setTimeout(attach, 1200);
+    })();
+    </script>
+    """, height=0)
+
+
+def show_splash(emoji="🌟", text="Amazing!"):
+    """Full-screen celebration overlay for correct answers."""
+    js = f"""
+    (function() {{
+        var d = window.parent.document;
+        if (d.getElementById('garden-splash')) return;
+        var ov = d.createElement('div');
+        ov.id = 'garden-splash';
+        ov.style.cssText = 'position:fixed;inset:0;background:rgba(255,245,140,0.93);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;';
+        ov.innerHTML = '<div style="font-size:130px;line-height:1;animation:sp-pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both">{emoji}</div>'
+                     + '<div style="font-size:54px;font-weight:900;color:#3D2B1F;font-family:Nunito,sans-serif;margin-top:14px;">{text}</div>';
+        var st2 = d.createElement('style');
+        st2.textContent = '@keyframes sp-pop{{0%{{transform:scale(0)}}60%{{transform:scale(1.25)}}100%{{transform:scale(1)}}}} @keyframes sp-fade{{0%{{opacity:1}}100%{{opacity:0}}}}';
+        d.head.appendChild(st2);
+        d.body.appendChild(ov);
+        setTimeout(function(){{ov.style.animation='sp-fade 0.4s ease-out forwards';}}, 1300);
+        setTimeout(function(){{ov.remove();st2.remove();}}, 1700);
+    }})();
+    """
+    components.html(f"<script>{js}</script>", height=0)
+
+
+def _truncate_audio(audio_bytes, max_seconds=3):
+    """Return audio bytes truncated to at most max_seconds."""
+    try:
+        arr, sr = sf.read(io.BytesIO(audio_bytes))
+        limit = int(max_seconds * sr)
+        if len(arr) > limit:
+            arr = arr[:limit]
+        buf = io.BytesIO()
+        sf.write(buf, arr, sr, format="WAV")
+        return buf.getvalue()
+    except Exception:
+        return audio_bytes
+
+
 def playback_child_voice(audio_bytes):
-    """Play the child's own recorded voice back to them."""
+    """Play the child's own recorded voice back to them (first 3 s only)."""
+    audio_bytes = _truncate_audio(audio_bytes, max_seconds=4)
     st.session_state.setdefault("play_count", 0)
     st.session_state.play_count += 1
     b64 = base64.b64encode(audio_bytes).decode()
-    # audio_recorder returns webm/wav depending on browser
     st.markdown(
         f'<audio autoplay data-n="v{st.session_state.play_count}">'
-        f'<source src="data:audio/webm;base64,{b64}" type="audio/webm">'
         f'<source src="data:audio/wav;base64,{b64}" type="audio/wav">'
+        f'<source src="data:audio/webm;base64,{b64}" type="audio/webm">'
         f'</audio>',
         unsafe_allow_html=True,
     )
@@ -578,6 +886,7 @@ def load_whisper():
 
 def try_recognize(audio_bytes):
     try:
+        audio_bytes = _truncate_audio(audio_bytes, max_seconds=4)
         audio_array, sample_rate = sf.read(io.BytesIO(audio_bytes))
         if audio_array.ndim > 1:
             audio_array = audio_array.mean(axis=1)
@@ -588,7 +897,8 @@ def try_recognize(audio_bytes):
             audio_array = audio_array[indices]
         audio_array = audio_array.astype(np.float32)
         model = load_whisper()
-        segments, _ = model.transcribe(audio_array, language="en", beam_size=1, vad_filter=True)
+        segments, _ = model.transcribe(audio_array, language="en", beam_size=1,
+                                        vad_filter=True, no_speech_threshold=0.3)
         text = " ".join(s.text.strip() for s in segments).strip()
         return (text, None) if text else (None, "quiet")
     except Exception:
@@ -598,19 +908,36 @@ def try_recognize(audio_bytes):
 def is_correct(recognized, target):
     recognized = recognized.lower().strip()
     target = target.lower().strip()
+
+    # Exact / substring match
     if target in recognized or recognized in target:
         return True
+
+    rec_words = recognized.split()
     target_words = target.split()
+
+    # Sentences: accept if ~25% of key words are recognisable
     if len(target_words) > 1:
-        key = [w for w in target_words if len(w) > 2] or target_words
-        rec_words = recognized.split()
+        key = [w for w in target_words if len(w) > 3] or target_words
         hits = sum(
             1 for kw in key
-            if any(SequenceMatcher(None, kw, rw).ratio() >= 0.70 for rw in rec_words)
+            if any(SequenceMatcher(None, kw, rw).ratio() >= 0.45 for rw in rec_words)
         )
-        return hits / len(key) >= 0.55
-    threshold = 0.52 if len(target) > 6 else 0.62
-    return any(SequenceMatcher(None, rw, target).ratio() >= threshold for rw in recognized.split())
+        return hits / len(key) >= 0.25
+
+    # Single word — toddler-friendly matching
+    for rw in rec_words:
+        # Same first two letters → accept (captures "tat"→"cat", "doh"→"dog", etc.)
+        if len(rw) >= 2 and len(target) >= 2 and rw[:2] == target[:2]:
+            return True
+        # Same first letter AND similar length (within 2 chars)
+        if rw and target and rw[0] == target[0] and abs(len(rw) - len(target)) <= 2:
+            return True
+        # Fuzzy similarity at a very gentle threshold
+        if SequenceMatcher(None, rw, target).ratio() >= 0.36:
+            return True
+
+    return False
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -647,6 +974,8 @@ def init_state():
         "progress_dirty": False,
         "current_word":        None,   # locked-in word for current practice turn
         "story_sound_played":  False,  # prevents badge sound replaying on every render
+        "level_up_pending":    None,
+        "milestone_pending":   None,   # score milestone (5, 10, 15...) waiting to be shown
     }
     for k, v in defaults.items():
         st.session_state.setdefault(k, v)
@@ -710,38 +1039,81 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 [data-testid="stHeader"] { background: transparent; }
 
+/* ── Floating background ── */
+@keyframes leaf-float {
+    0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+    5%   { opacity: 0.35; }
+    95%  { opacity: 0.25; }
+    100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
+}
+.bg-leaf {
+    position: fixed; pointer-events: none; z-index: 0;
+    animation: leaf-float linear infinite;
+    user-select: none;
+}
+
+/* ── Word card ── */
 .word-card {
     background: #FFFFFF; border-radius: 28px; padding: 28px 20px 20px;
     box-shadow: 0 6px 30px rgba(100,70,40,0.10); text-align: center;
-    margin: 4px auto; border: 2px solid #F0E8D8;
+    margin: 4px auto; border: 2px solid #F0E8D8; position: relative; z-index: 1;
 }
 .word-emoji  { font-size: 120px; line-height: 1.15; }
 .word-text   { font-size: 48px; font-weight: 800; color: #3D2B1F;
                letter-spacing: 3px; margin-top: 6px; }
 
+/* ── Story card ── */
 .story-card {
-    background: #FFFFFF; border-radius: 28px; padding: 24px 20px;
-    box-shadow: 0 6px 30px rgba(100,70,40,0.10); border: 2px solid #F0E8D8; margin-bottom: 10px;
+    background: linear-gradient(160deg, #FFFDF8 0%, #FFF4E6 100%);
+    border-radius: 28px; padding: 24px 20px;
+    box-shadow: 0 6px 30px rgba(100,70,40,0.12); border: 2px solid #F0E8D8;
+    margin-bottom: 10px; position: relative; z-index: 1;
 }
-.story-scene    { font-size: 52px; text-align: center; letter-spacing: 8px; }
-.story-text     { font-size: 19px; color: #5A4030; line-height: 1.8;
-                  text-align: center; white-space: pre-line; margin: 10px 0; }
-.story-word     { font-size: 46px; font-weight: 800; color: #C17A4A; text-align: center; letter-spacing: 4px; }
+@keyframes scene-float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50%       { transform: translateY(-14px) scale(1.06); }
+}
+@keyframes emoji-bounce {
+    0%   { transform: scale(0.4) rotate(-12deg); opacity: 0; }
+    55%  { transform: scale(1.25) rotate(4deg); opacity: 1; }
+    80%  { transform: scale(0.92) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.story-scene {
+    font-size: 56px; text-align: center; letter-spacing: 12px;
+    display: block; margin-bottom: 4px;
+}
+.story-emoji-pop {
+    font-size: 100px; text-align: center; display: block;
+    animation: emoji-bounce 0.7s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+.story-text { font-size: 19px; color: #5A4030; line-height: 1.8;
+              text-align: center; white-space: pre-line; margin: 10px 0; }
+.story-word { font-size: 46px; font-weight: 800; color: #C17A4A;
+              text-align: center; letter-spacing: 4px; }
 
-.progress-row   { text-align: center; font-size: 24px; letter-spacing: 6px; margin: 6px 0 14px; }
+/* ── Progress dots ── */
+.progress-row { text-align: center; font-size: 24px; letter-spacing: 6px; margin: 6px 0 14px; }
 
-.score-bar  { font-size: 20px; text-align: center; color: #7A5C3A; font-weight: 700; margin: 2px 0 8px; }
+/* ── Star row (replaces score-bar) ── */
+.star-row { text-align: center; font-size: 28px; margin: 4px 0 8px;
+            letter-spacing: 4px; position: relative; z-index: 1; }
+.star-level { font-size: 14px; color: #9A7A5A; font-weight: 700;
+              text-align: center; margin-bottom: 6px; }
 
+/* ── WOTD ── */
 .wotd-card {
     background: #FFF8EE; border-radius: 16px; padding: 10px 16px;
     border: 2px solid #F5DEB3; text-align: center; margin: 6px 0;
+    position: relative; z-index: 1;
 }
 .wotd-label { font-size: 13px; color: #9A7A5A; font-weight: 600; }
 .wotd-word  { font-size: 28px; font-weight: 800; color: #C17A4A; }
 
+/* ── Badge shelf ── */
 .badge-shelf {
     display: flex; overflow-x: auto; gap: 8px; padding: 6px 2px;
-    scrollbar-width: none; margin-bottom: 4px;
+    scrollbar-width: none; margin-bottom: 4px; position: relative; z-index: 1;
 }
 .badge-shelf::-webkit-scrollbar { display: none; }
 .badge-item {
@@ -757,18 +1129,55 @@ html, body, [data-testid="stAppViewContainer"] {
     animation: badge-pop 0.6s ease-out;
 }
 
+/* ── Feedback ── */
 .fb-yes { font-size: 38px; font-weight: 800; color: #4A7C59; text-align: center; padding: 10px; }
 .fb-no  { font-size: 26px; color: #A0522D; text-align: center; line-height: 1.6; padding: 8px; }
 
-.choice-card {
-    background: #FFFFFF; border-radius: 22px; padding: 20px 10px;
-    box-shadow: 0 4px 20px rgba(100,70,40,0.08); text-align: center;
-    cursor: pointer; border: 3px solid #F0E8D8; transition: transform 0.1s;
+/* ── Category buttons ── */
+.cat-btn .stButton > button {
+    background: #FFF8EE !important;
+    border: 2px solid #F5DEB3 !important;
+    border-radius: 16px !important;
+    font-size: 14px !important;
+    padding: 8px 4px !important;
+    color: #7A5C3A !important;
+    min-height: 52px !important;
+    font-weight: 700 !important;
 }
-.choice-correct { border-color: #4A7C59 !important; background: #E8F5E9 !important; }
-.choice-wrong   { border-color: #C62828 !important; background: #FFEBEE !important; }
-.choice-emoji   { font-size: 80px; line-height: 1.1; }
+.cat-btn-active .stButton > button {
+    background: #C17A4A !important;
+    border: 2px solid #A06030 !important;
+    color: white !important;
+    font-weight: 800 !important;
+}
 
+/* ── Choice buttons (single tappable card) ── */
+.choice-btn .stButton > button {
+    min-height: 150px !important;
+    font-size: 46px !important;
+    background: #FFFFFF !important;
+    border: 3px solid #F0E8D8 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 4px 20px rgba(100,70,40,0.08) !important;
+    color: #3D2B1F !important;
+    padding: 14px 6px !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
+    transition: transform 0.1s, box-shadow 0.1s !important;
+}
+.choice-btn .stButton > button:hover {
+    border-color: #C17A4A !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 28px rgba(100,70,40,0.18) !important;
+}
+.choice-correct .stButton > button {
+    border-color: #4A7C59 !important; background: #E8F5E9 !important;
+}
+.choice-wrong .stButton > button {
+    border-color: #C62828 !important; background: #FFEBEE !important;
+}
+
+/* ── Story select ── */
 .story-select-card {
     background: #FFFFFF; border-radius: 22px; padding: 20px 10px;
     box-shadow: 0 4px 16px rgba(100,70,40,0.08); text-align: center;
@@ -776,32 +1185,80 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .story-select-card:hover { border-color: #C17A4A; }
 
+/* ── Level-up banner ── */
+.levelup-banner {
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    border-radius: 24px; padding: 28px 20px; text-align: center;
+    box-shadow: 0 8px 32px rgba(255,140,0,0.35); margin: 10px 0;
+    animation: badge-pop 0.6s ease-out;
+    position: relative; z-index: 1;
+}
+
+/* ── Milestone banner ── */
+.milestone-banner {
+    background: linear-gradient(135deg, #FF6B9D 0%, #C44FD8 50%, #7B68EE 100%);
+    border-radius: 28px; padding: 36px 20px; text-align: center;
+    box-shadow: 0 10px 40px rgba(196,79,216,0.45); margin: 10px 0;
+    animation: badge-pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    position: relative; z-index: 1;
+}
+
+/* ── Mic pulsing ring ── */
+@keyframes mic-pulse {
+    0%, 100% { box-shadow: 0 0 0 0   rgba(193,122,74,0.55),
+                            0 0 0 0   rgba(193,122,74,0.30); }
+    50%       { box-shadow: 0 0 0 14px rgba(193,122,74,0.15),
+                            0 0 0 28px rgba(193,122,74,0.05); }
+}
+.mic-ring {
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 50%; animation: mic-pulse 1.6s ease-in-out infinite;
+    width: fit-content; margin: 0 auto;
+}
+
+/* ── Animations ── */
 @keyframes badge-pop {
     0%   { transform: scale(0.5); opacity: 0; }
     60%  { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
 }
 @keyframes celebrate {
     0%   { transform: scale(0.5) rotate(-10deg); opacity: 0; }
     50%  { transform: scale(1.2) rotate(5deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: scale(1)   rotate(0deg); opacity: 1; }
 }
 .celebrate-emoji {
     display: block; text-align: center; font-size: 80px;
     animation: celebrate 0.5s ease-out;
 }
 
+/* ── Buttons (global) ── */
 .stButton > button {
     border-radius: 16px !important; font-size: 18px !important;
     font-weight: 700 !important; padding: 10px 18px !important;
+    position: relative; z-index: 1;
 }
 
-/* Parent dashboard */
+/* ── Parent dashboard ── */
 .parent-section {
     background: #F0EDE6; border-radius: 20px; padding: 20px;
     border: 2px solid #D5C8B0; margin-top: 10px;
 }
 </style>
+""", unsafe_allow_html=True)
+
+
+# Floating background leaves / flowers
+st.markdown("""
+<div aria-hidden="true">
+  <span class="bg-leaf" style="left:5%;font-size:28px;animation-duration:18s;animation-delay:0s;">🍃</span>
+  <span class="bg-leaf" style="left:18%;font-size:22px;animation-duration:22s;animation-delay:3s;">🌸</span>
+  <span class="bg-leaf" style="left:33%;font-size:26px;animation-duration:16s;animation-delay:7s;">🍀</span>
+  <span class="bg-leaf" style="left:50%;font-size:20px;animation-duration:25s;animation-delay:1s;">⭐</span>
+  <span class="bg-leaf" style="left:65%;font-size:24px;animation-duration:20s;animation-delay:5s;">🌺</span>
+  <span class="bg-leaf" style="left:80%;font-size:18px;animation-duration:17s;animation-delay:9s;">🍃</span>
+  <span class="bg-leaf" style="left:90%;font-size:22px;animation-duration:23s;animation-delay:2s;">🌼</span>
+</div>
 """, unsafe_allow_html=True)
 
 
@@ -872,7 +1329,7 @@ st.markdown(
     f"<div class='wotd-card'>"
     f"<span class='wotd-label'>⭐ Word of the Day</span><br>"
     f"<span style='font-size:40px;'>{wotd['emoji']}</span> "
-    f"<span class='wotd-word'>{wotd['text'].upper()}</span>"
+    f"<span class='wotd-word'>{wotd['text'].capitalize()}</span>"
     f"</div>",
     unsafe_allow_html=True,
 )
@@ -894,15 +1351,14 @@ if st.session_state.new_badges:
         play_sound("badge")
     st.session_state.new_badges = []
 
-# Score
+# Star row
 sc = st.session_state.score
-at = st.session_state.attempts
 level_names = {1: "Starter 🌱", 2: "Explorer 🌿", 3: "Champion 🌳", 4: "Star ⭐"}
 lvl = level_names.get(st.session_state.progress.get("difficulty_level", 1), "Starter 🌱")
-st.markdown(
-    f"<div class='score-bar'>⭐ {sc} right out of {at} tries  •  Level: {lvl}</div>",
-    unsafe_allow_html=True,
-)
+stars_filled = min(sc, 10)
+star_display = "⭐" * stars_filled + "☆" * (10 - stars_filled) if sc <= 10 else "⭐" * 10 + f" +{sc - 10}"
+st.markdown(f"<div class='star-level'>{lvl}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='star-row'>{star_display}</div>", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PARENT DASHBOARD
@@ -984,6 +1440,54 @@ if st.session_state.show_parent:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# LEVEL-UP CEREMONY
+# ══════════════════════════════════════════════════════════════════════════════
+if st.session_state.get("level_up_pending"):
+    new_lvl = st.session_state.level_up_pending
+    level_names_map = {2: ("Explorer 🌿", "🌿"), 3: ("Champion 🌳", "🏆"), 4: ("Star ⭐", "⭐")}
+    lvl_name, lvl_icon = level_names_map.get(new_lvl, ("Star ⭐", "⭐"))
+    st.markdown(f"""
+    <div class='levelup-banner'>
+        <div style='font-size:80px;'>{lvl_icon}</div>
+        <div style='font-size:32px;font-weight:900;color:#3D2B1F;margin:8px 0 4px;'>Level Up!</div>
+        <div style='font-size:20px;font-weight:700;color:#5D3B1F;'>You are now a <b>{lvl_name}</b>!</div>
+    </div>""", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        if st.button("🎉  Woohoo!", use_container_width=True, key="levelup_dismiss"):
+            del st.session_state["level_up_pending"]
+            st.rerun()
+    st.stop()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MILESTONE PARTY SCREEN (every 5 correct answers)
+# ══════════════════════════════════════════════════════════════════════════════
+if st.session_state.get("milestone_pending"):
+    ms = st.session_state.milestone_pending
+    icons = ["🌟", "🎉", "🦋", "🏆", "🌈", "🎊", "⭐", "🌸"]
+    icon = icons[(ms // 5 - 1) % len(icons)]
+    st.markdown(f"""
+    <div class='milestone-banner'>
+        <div style='font-size:100px;line-height:1;'>{icon}</div>
+        <div style='font-size:38px;font-weight:900;color:white;margin:10px 0 4px;
+                    text-shadow:0 2px 8px rgba(0,0,0,0.25);'>
+            {ms} Stars! 🎉
+        </div>
+        <div style='font-size:22px;font-weight:700;color:rgba(255,255,255,0.92);'>
+            You are absolutely AMAZING!
+        </div>
+    </div>""", unsafe_allow_html=True)
+    play_sound("badge")
+    c1, c2, c3 = st.columns([1, 2, 1])
+    with c2:
+        if st.button("🎉  Keep going!", use_container_width=True, key="milestone_dismiss"):
+            st.session_state.milestone_pending = None
+            st.rerun()
+    st.stop()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # MODE SELECTOR
 # ══════════════════════════════════════════════════════════════════════════════
 m1, m2, m3 = st.columns(3)
@@ -1011,16 +1515,25 @@ def handle_answer(word_dict, category, correct, heard):
     if new_bgs:
         st.session_state.new_badges += new_bgs
     # Difficulty unlock
+    old_lvl = st.session_state.progress.get("difficulty_level", 1)
     tc = st.session_state.progress.get("total_correct", 0)
     cur_lvl = st.session_state.progress.get("difficulty_level", 1)
     thresholds = {1: 10, 2: 25, 3: 50}
     if cur_lvl in thresholds and tc >= thresholds[cur_lvl]:
         st.session_state.progress["difficulty_level"] = cur_lvl + 1
         st.session_state.progress_dirty = True
+    new_lvl = st.session_state.progress.get("difficulty_level", 1)
+    if new_lvl > old_lvl:
+        st.session_state.level_up_pending = new_lvl
     if correct:
         st.session_state.score += 1
         st.session_state.feedback = ("correct", heard)
         play_sound("correct")
+        st.balloons()
+        show_splash("🌟", "Amazing!")
+        # Milestone every 5 correct answers
+        if st.session_state.score % 5 == 0:
+            st.session_state.milestone_pending = st.session_state.score
     else:
         st.session_state.feedback = ("wrong", heard)
         play_sound("wrong")
@@ -1100,30 +1613,49 @@ if st.session_state.mode == "story":
             f"Step {idx+1} of {total} — {story_label}</div>", unsafe_allow_html=True,
         )
 
+        txt_display = step['text'].capitalize()
+        story_autoplay_key = f"story_autoplayed_{st.session_state.story_key}_{idx}"
+        if not st.session_state.get(story_autoplay_key):
+            # Speak narration then the target word
+            speak_story_step(step["narration"], step["text"])
+            st.session_state[story_autoplay_key] = True
+
+        # Per-story card background
+        story_bg, story_accent = STORY_COLORS.get(
+            st.session_state.story_key,
+            ("linear-gradient(160deg, #FFFDF8 0%, #FFF4E6 100%)", "#C17A4A"),
+        )
+        scene_html = animated_scene(step["scene"])
+
         st.markdown(f"""
-        <div class='story-card'>
-            <div class='story-scene'>{step['scene']}</div>
+        <div class='story-card' style='background:{story_bg};'>
+            <div class='story-scene'>{scene_html}</div>
             <div class='story-text'>{step['narration']}</div>
             <hr style='border:1px solid #F0E8D8;margin:10px 0;'>
             <div style='font-size:15px;color:#9A7A5A;text-align:center;font-weight:600;'>🎤 Can you say this word?</div>
-            <div style='font-size:90px;text-align:center;'>{step['emoji']}</div>
-            <div class='story-word'>{step['text'].upper()}</div>
+            <div class='story-emoji-pop'>{step['emoji']}</div>
+            <div class='story-word' style='color:{story_accent};'>{txt_display}</div>
         </div>""", unsafe_allow_html=True)
 
         c1, c2, c3 = st.columns([1, 2, 1])
         with c2:
             if st.button("🔊  Hear it!", use_container_width=True, key="story_hear"):
-                autoplay(speak(step["text"]))
+                speak_instant(step["text"])
 
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align:center;color:#7A5C3A;'>🎤 Now YOU say it!</h3>", unsafe_allow_html=True)
-
-
+        st.markdown(
+            "<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+            "👇 Tap the mic, then say the word!</div>",
+            unsafe_allow_html=True,
+        )
+        inject_mic_listener()
+        st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
         audio_bytes = audio_recorder(
             text="", recording_color="#C17A4A", neutral_color="#BBA890",
-            icon_size="3x", pause_threshold=1.0,
+            icon_size="3x", pause_threshold=0.7,
             key=f"story_{st.session_state.story_key}_{idx}_{st.session_state.attempts}",
         )
+        st.markdown("</div>", unsafe_allow_html=True)
 
         if audio_bytes:
             playback_child_voice(audio_bytes)
@@ -1131,9 +1663,9 @@ if st.session_state.mode == "story":
             if recognized:
                 handle_answer(step, "📖 Stories", is_correct(recognized, step["text"]), recognized)
             elif err == "quiet":
-                st.warning("🙈 I couldn't hear you — try again!")
+                st.markdown("<div class='fb-no'>🙈 I didn't hear anything!<br>Speak a little louder! 🌈</div>", unsafe_allow_html=True)
             else:
-                st.warning("📡 Something went wrong — try again!")
+                st.markdown("<div class='fb-no'>Oops! Let's try again! 🌈</div>", unsafe_allow_html=True)
 
         if st.session_state.feedback:
             kind, heard = st.session_state.feedback
@@ -1160,9 +1692,19 @@ if st.session_state.mode == "story":
                             st.session_state.story_idx += 1
                         st.rerun()
             else:
+                # Auto-replay the target word and show encouragement
+                speak_instant(step["text"])
+                encouragements = [
+                    "Almost! You can do it! 💪",
+                    "So close! Try one more time! 🌟",
+                    "Keep going, superstar! ⭐",
+                    "Nearly there! Give it another go! 🌈",
+                ]
+                enc = encouragements[st.session_state.attempts % len(encouragements)]
                 st.markdown(
-                    f"<div class='fb-no'>🙈 I heard <b>\"{heard}\"</b><br>"
-                    f"Try saying <b style='color:#C17A4A'>\"{step['text']}\"</b> again!</div>",
+                    f"<div class='fb-no'>{enc}<br>"
+                    f"<span style='font-size:42px;font-weight:900;color:{story_accent};'>"
+                    f"{step['emoji']} {txt_display}</span></div>",
                     unsafe_allow_html=True,
                 )
 
@@ -1180,7 +1722,7 @@ elif st.session_state.mode == "choice":
         st.session_state.choice_correct_word = correct_text
         st.session_state.choice_answered     = False
         st.session_state.choice_correct      = False
-        autoplay(speak(correct_text))
+        speak_instant(correct_text)
 
     opts         = st.session_state.choice_options
     correct_text = st.session_state.choice_correct_word
@@ -1190,9 +1732,12 @@ elif st.session_state.mode == "choice":
         f"👂 Which one did you hear?</div>",
         unsafe_allow_html=True,
     )
+    ct_len = len(correct_text)
+    ct_size = "24px" if ct_len > 20 else "34px" if ct_len > 10 else "44px"
+    ct_spacing = "0px" if ct_len > 10 else "3px"
     st.markdown(
-        f"<div style='text-align:center;font-size:44px;font-weight:800;color:#C17A4A;letter-spacing:3px;margin-bottom:10px;'>"
-        f"{correct_text.upper()}</div>",
+        f"<div style='text-align:center;font-size:{ct_size};font-weight:800;color:#C17A4A;"
+        f"letter-spacing:{ct_spacing};margin-bottom:10px;'>{correct_text.capitalize()}</div>",
         unsafe_allow_html=True,
     )
 
@@ -1200,27 +1745,33 @@ elif st.session_state.mode == "choice":
     c1, c2, c3 = st.columns([1, 2, 1])
     with c2:
         if st.button("🔊  Hear it again!", use_container_width=True, key="choice_hear"):
-            autoplay(speak(correct_text))
+            speak_instant(correct_text)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # 3 choice buttons
+    # 3 choice buttons — single tappable card per option
     answered = st.session_state.choice_answered
     cols = st.columns(3)
     for i, opt in enumerate(opts):
         with cols[i]:
-            border_cls = ""
             if answered:
+                # After answer: show decorative card with result colour
                 border_cls = "choice-correct" if opt["text"] == correct_text else "choice-wrong"
-            st.markdown(
-                f"<div class='choice-card {border_cls}'>"
-                f"<div class='choice-emoji'>{opt['emoji']}</div>"
-                f"<div style='font-size:20px;font-weight:800;color:#3D2B1F;'>{opt['text'].upper()}</div>"
-                f"</div>",
-                unsafe_allow_html=True,
-            )
-            if not answered:
-                if st.button(opt["text"].upper(), use_container_width=True, key=f"choice_btn_{i}"):
+                st.markdown(
+                    f"<div class='choice-card {border_cls}'>"
+                    f"<div class='choice-emoji'>{opt['emoji']}</div>"
+                    f"<div style='font-size:20px;font-weight:800;color:#3D2B1F;'>{opt['text'].capitalize()}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+            else:
+                # Before answer: big tappable button (emoji + word, no separate card)
+                st.markdown("<div class='choice-btn'>", unsafe_allow_html=True)
+                if st.button(
+                    f"{opt['emoji']}  {opt['text'].capitalize()}",
+                    use_container_width=True,
+                    key=f"choice_btn_{i}",
+                ):
                     correct_ans = opt["text"] == correct_text
                     handle_answer(
                         next(o for o in opts if o["text"] == correct_text),
@@ -1231,13 +1782,14 @@ elif st.session_state.mode == "choice":
                     st.session_state.choice_answered = True
                     st.session_state.choice_correct  = correct_ans
                     st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
 
     if answered:
         if st.session_state.choice_correct:
             st.markdown("<div class='fb-yes'>🎉 YES! That's right! 🎉</div>", unsafe_allow_html=True)
         else:
             st.markdown(
-                f"<div class='fb-no'>The right answer was <b style='color:#C17A4A'>{correct_text.upper()}</b>!</div>",
+                f"<div class='fb-no'>The right answer was <b style='color:#C17A4A'>{correct_text.capitalize()}</b>!</div>",
                 unsafe_allow_html=True,
             )
         st.markdown("<br>", unsafe_allow_html=True)
@@ -1255,30 +1807,41 @@ elif st.session_state.mode == "choice":
 # PRACTICE MODE
 # ══════════════════════════════════════════════════════════════════════════════
 else:
-    # Category selector — 2 rows of 5
+    # Category selector — styled cards, 4 per row
     all_cats = list(get_all_categories().keys())
-    row1, row2 = all_cats[:5], all_cats[5:]
-    for row in [row1, row2]:
+    for row_start in range(0, len(all_cats), 4):
+        row = all_cats[row_start:row_start + 4]
         rcols = st.columns(len(row))
         for col, cat in zip(rcols, row):
             with col:
                 active = cat == st.session_state.category
-                label  = f"**{cat}**" if active else cat
-                if st.button(label, use_container_width=True, key=f"cat_{cat}"):
+                wrapper = "cat-btn-active" if active else "cat-btn"
+                st.markdown(f"<div class='{wrapper}'>", unsafe_allow_html=True)
+                if st.button(cat, use_container_width=True, key=f"cat_{cat}"):
                     load_category(cat)
                     st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Lock in the current word for this turn — only advance when explicitly requested
     if st.session_state.current_word is None:
         st.session_state.current_word = pick_next_word()
+        st.session_state.pop("last_autoplayed", None)  # force auto-play for new word
     current = st.session_state.current_word
 
+    # Auto-speak the word when it first appears
+    if st.session_state.get("last_autoplayed") != current["text"]:
+        speak_instant(current["text"])
+        st.session_state.last_autoplayed = current["text"]
+
+    txt_len = len(current['text'])
+    txt_size = "26px" if txt_len > 20 else "36px" if txt_len > 10 else "48px"
+    txt_spacing = "0px" if txt_len > 10 else "3px"
     st.markdown(f"""
     <div class='word-card'>
         <div class='word-emoji'>{current['emoji']}</div>
-        <div class='word-text'>{current['text'].upper()}</div>
+        <div class='word-text' style='font-size:{txt_size};letter-spacing:{txt_spacing};'>{current['text'].capitalize()}</div>
     </div>""", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -1286,16 +1849,22 @@ else:
     c1, c2, c3 = st.columns([1, 2, 1])
     with c2:
         if st.button("🔊  Hear it!", use_container_width=True, key="practice_hear"):
-            autoplay(speak(current["text"]))
+            speak_instant(current["text"])
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center;color:#7A5C3A;'>🎤 Now YOU say it!</h3>", unsafe_allow_html=True)
-
+    st.markdown(
+        "<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+        "👇 Tap the mic, then say the word!</div>",
+        unsafe_allow_html=True,
+    )
+    inject_mic_listener()
+    st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
     audio_bytes = audio_recorder(
         text="", recording_color="#C17A4A", neutral_color="#BBA890",
-        icon_size="3x", pause_threshold=1.0,
+        icon_size="3x", pause_threshold=0.7,
         key=f"practice_{st.session_state.category}_{st.session_state.score}_{st.session_state.attempts}",
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if audio_bytes:
         playback_child_voice(audio_bytes)
@@ -1303,19 +1872,33 @@ else:
         if recognized:
             handle_answer(current, st.session_state.category, is_correct(recognized, current["text"]), recognized)
         elif err == "quiet":
-            st.warning("🙈 I couldn't hear you — try again!")
+            st.markdown(
+                "<div class='fb-no'>🙈 I didn't hear anything!<br>"
+                "Tap the mic and speak a little louder! 🌈</div>",
+                unsafe_allow_html=True,
+            )
         else:
-            st.warning("📡 Something went wrong — try again!")
+            st.markdown("<div class='fb-no'>Oops! Try again! 🌈</div>", unsafe_allow_html=True)
 
     if st.session_state.feedback:
         kind, heard = st.session_state.feedback
         if kind == "correct":
             st.markdown(f"<div class='celebrate-emoji'>{current['emoji']}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='fb-yes'>🎉 YES! {current['text'].upper()}! 🎉</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='fb-yes'>🎉 YES! {current['text'].capitalize()}! 🎉</div>", unsafe_allow_html=True)
         else:
+            # Auto-replay the word and show encouragement
+            speak_instant(current["text"])
+            encouragements = [
+                "Almost! You can do it! 💪",
+                "So close! Try one more time! 🌟",
+                "Keep going, superstar! ⭐",
+                "Nearly there! Give it another go! 🌈",
+            ]
+            enc = encouragements[st.session_state.attempts % len(encouragements)]
             st.markdown(
-                f"<div class='fb-no'>🙈 I heard <b>\"{heard}\"</b><br>"
-                f"Try saying <b style='color:#C17A4A'>\"{current['text']}\"</b> again!</div>",
+                f"<div class='fb-no'>{enc}<br>"
+                f"<span style='font-size:42px;font-weight:900;color:#C17A4A;'>"
+                f"{current['emoji']} {current['text'].capitalize()}</span></div>",
                 unsafe_allow_html=True,
             )
 
@@ -1324,7 +1907,12 @@ else:
     with c2:
         if st.button("➡️  Next word!", use_container_width=True, key="practice_next"):
             st.session_state.feedback     = None
-            st.session_state.current_word = None   # advance to next word
+            st.session_state.current_word = None
+            st.rerun()
+    with c3:
+        if st.button("⏭️  Skip", use_container_width=True, key="practice_skip"):
+            st.session_state.feedback     = None
+            st.session_state.current_word = None
             st.rerun()
 
 
