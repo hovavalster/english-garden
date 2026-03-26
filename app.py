@@ -179,6 +179,24 @@ WEATHER = [
     {"text": "cold",     "emoji": "🥶"},
     {"text": "storm",    "emoji": "🌪️"},
 ]
+EASY_PHRASES = [
+    {"text": "Hello",        "emoji": "👋"},
+    {"text": "Bye bye",      "emoji": "👋"},
+    {"text": "Thank you",    "emoji": "🙏"},
+    {"text": "Yes please",   "emoji": "✅"},
+    {"text": "No thank you", "emoji": "🙅"},
+    {"text": "I love you",   "emoji": "❤️"},
+    {"text": "Good morning", "emoji": "☀️"},
+    {"text": "Good night",   "emoji": "🌙"},
+    {"text": "More please",  "emoji": "🍽️"},
+    {"text": "I am happy",   "emoji": "😊"},
+    {"text": "I am hungry",  "emoji": "🍔"},
+    {"text": "Let us go",    "emoji": "🚶"},
+    {"text": "Come here",    "emoji": "🫸"},
+    {"text": "I am tired",   "emoji": "😴"},
+    {"text": "Help me",      "emoji": "🙋"},
+    {"text": "Look at me",   "emoji": "👀"},
+]
 SENTENCES = [
     {"text": "I love you so much",              "emoji": "❤️"},
     {"text": "Good morning my dear friend",     "emoji": "☀️"},
@@ -218,18 +236,19 @@ SENTENCES = [
 ]
 
 ALL_CATEGORIES = {
-    "🐾 Animals":   ANIMALS,
-    "🍳 Kitchen":   KITCHEN,
-    "🛏️ Bedroom":   BEDROOM,
-    "🎨 Colors":    COLORS,
-    "🔢 Numbers":   NUMBERS,
-    "👁️ Body Parts": BODY_PARTS,
-    "😊 Emotions":  EMOTIONS,
-    "🍓 Fruits":    FRUITS,
-    "👕 Clothes":   CLOTHES,
-    "🚗 Vehicles":  VEHICLES,
-    "🌦️ Weather":   WEATHER,
-    "💬 Sentences": SENTENCES,
+    "🐾 Animals":     ANIMALS,
+    "🍳 Kitchen":     KITCHEN,
+    "🛏️ Bedroom":     BEDROOM,
+    "🎨 Colors":      COLORS,
+    "🔢 Numbers":     NUMBERS,
+    "👁️ Body Parts":  BODY_PARTS,
+    "😊 Emotions":    EMOTIONS,
+    "🍓 Fruits":      FRUITS,
+    "👕 Clothes":     CLOTHES,
+    "🚗 Vehicles":    VEHICLES,
+    "🌦️ Weather":     WEATHER,
+    "💬 Easy Phrases": EASY_PHRASES,
+    "📝 Sentences":   SENTENCES,
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -693,6 +712,72 @@ def speak_story_step(narration, word):
     components.html(f"<script>{js}</script>", height=0)
 
 
+def speak_then_record(word):
+    """Speak word slowly, show 3-2-1 countdown, then auto-click the mic button."""
+    safe = word.replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ")
+    components.html(f"""<script>
+    (function() {{
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        function getVoice() {{
+            var vs = window.speechSynthesis.getVoices();
+            var en = vs.filter(function(v) {{ return v.lang.startsWith('en'); }});
+            return en.find(function(v) {{
+                return ['Zira','Aria','Jenny','Google','Ana'].some(function(n) {{ return v.name.indexOf(n) >= 0; }});
+            }}) || en[0];
+        }}
+        function doSpeak() {{
+            var u = new SpeechSynthesisUtterance('{safe}');
+            u.lang = 'en-US'; u.rate = 0.72; u.pitch = 1.05;
+            var v = getVoice(); if (v) u.voice = v;
+            u.onend = startCountdown;
+            window.speechSynthesis.speak(u);
+        }}
+        var vs = window.speechSynthesis.getVoices();
+        if (vs.length) {{ doSpeak(); }} else {{ window.speechSynthesis.onvoiceschanged = doSpeak; }}
+
+        function startCountdown() {{
+            var pd = window.parent.document;
+            var existing = pd.getElementById('echo-cd');
+            if (existing) existing.remove();
+            var ov = pd.createElement('div');
+            ov.id = 'echo-cd';
+            ov.style.cssText = [
+                'position:fixed', 'top:50%', 'left:50%',
+                'transform:translate(-50%,-50%)',
+                'background:rgba(193,122,74,0.95)',
+                'color:white', 'border-radius:40px',
+                'padding:28px 64px', 'font-size:80px',
+                'font-weight:900', 'z-index:99999',
+                'font-family:Nunito,sans-serif',
+                'text-align:center', 'min-width:160px',
+                'box-shadow:0 8px 40px rgba(0,0,0,0.3)'
+            ].join(';');
+            pd.body.appendChild(ov);
+            var n = 3;
+            function tick() {{
+                if (n > 0) {{
+                    ov.textContent = n--;
+                    setTimeout(tick, 750);
+                }} else {{
+                    ov.textContent = '🎤';
+                    setTimeout(function() {{
+                        ov.remove();
+                        pd.querySelectorAll('iframe').forEach(function(f) {{
+                            try {{
+                                var btn = f.contentDocument && f.contentDocument.querySelector('button');
+                                if (btn) btn.click();
+                            }} catch(e) {{}}
+                        }});
+                    }}, 600);
+                }}
+            }}
+            tick();
+        }}
+    }})();
+    </script>""", height=0)
+
+
 def animated_scene(scene_str):
     """Wrap each emoji in the scene string in a span with staggered bounce animation."""
     spans = ""
@@ -905,6 +990,97 @@ def try_recognize(audio_bytes):
         return None, "error"
 
 
+# Common mispronunciations for Hebrew-speaking children
+# th → d/t/f, r → w/l, long vowels vary
+SOUND_ALIASES = {
+    "three":   ["free", "tree", "dee", "fee", "dree"],
+    "the":     ["da", "de", "duh", "deh"],
+    "this":    ["dis", "diss", "tis"],
+    "that":    ["dat", "dhat", "tat"],
+    "there":   ["dare", "der", "dere", "dair"],
+    "then":    ["den", "ten"],
+    "thank":   ["dank", "tank", "fank"],
+    "think":   ["dink", "tink", "fink"],
+    "through": ["frough", "drough", "troo"],
+    "rabbit":  ["wabbit", "labbit", "habbit"],
+    "red":     ["wed", "led", "wred"],
+    "rain":    ["wain", "lain"],
+    "rainbow": ["wainbow", "lainbow"],
+    "run":     ["wun", "lun"],
+    "rocket":  ["wocket", "locket"],
+    "river":   ["wiver", "liver"],
+    "ring":    ["wing", "ling"],
+    "rock":    ["wock", "lock"],
+    "road":    ["woad", "load"],
+    "right":   ["wight", "light"],
+}
+
+
+SYLLABLES = {
+    # Animals
+    "elephant":    "el · e · phant",
+    "butterfly":   "but · ter · fly",
+    "rabbit":      "rab · bit",
+    "turtle":      "tur · tle",
+    "penguin":     "pen · guin",
+    "monkey":      "mon · key",
+    "tiger":       "ti · ger",
+    "lion":        "li · on",
+    "camel":       "cam · el",
+    # Fruits
+    "banana":      "ba · na · na",
+    "strawberry":  "straw · ber · ry",
+    "watermelon":  "wa · ter · mel · on",
+    "orange":      "or · ange",
+    "cherry":      "cher · ry",
+    "mango":       "man · go",
+    "lemon":       "lem · on",
+    "apple":       "ap · ple",
+    "grape":       "grape",
+    # Kitchen
+    "spoon":       "spoon",
+    "butter":      "but · ter",
+    "fridge":      "fridge",
+    # Bedroom
+    "pillow":      "pil · low",
+    "blanket":     "blan · ket",
+    "mirror":      "mir · ror",
+    "window":      "win · dow",
+    # Clothes
+    "jacket":      "jack · et",
+    "gloves":      "gloves",
+    "sandals":     "san · dals",
+    "pajamas":     "pa · ja · mas",
+    # Body
+    "finger":      "fin · ger",
+    "elbow":       "el · bow",
+    "shoulder":    "shoul · der",
+    "stomach":     "stom · ach",
+    # Vehicles
+    "helicopter":  "hel · i · cop · ter",
+    "bicycle":     "bi · cy · cle",
+    "tractor":     "trac · tor",
+    "rocket":      "rock · et",
+    # Weather
+    "rainbow":     "rain · bow",
+    "thunder":     "thun · der",
+    "stormy":      "storm · y",
+    # Easy Phrases
+    "morning":     "morn · ing",
+    "hungry":      "hun · gry",
+    "happy":       "hap · py",
+    "tired":       "tired",
+    # Colors
+    "purple":      "pur · ple",
+    "yellow":      "yel · low",
+    "orange":      "or · ange",
+    # Numbers
+    "seven":       "sev · en",
+    "eight":       "eight",
+    "nine":        "nine",
+}
+
+
 def is_correct(recognized, target):
     recognized = recognized.lower().strip()
     target = target.lower().strip()
@@ -915,6 +1091,14 @@ def is_correct(recognized, target):
 
     rec_words = recognized.split()
     target_words = target.split()
+
+    # Sound aliases — accept Hebrew-speaker mispronunciations
+    for t_word in target_words:
+        for alias in SOUND_ALIASES.get(t_word, []):
+            if alias in recognized or recognized in alias:
+                return True
+            if any(SequenceMatcher(None, alias, rw).ratio() >= 0.75 for rw in rec_words):
+                return True
 
     # Sentences: accept if ~25% of key words are recognisable
     if len(target_words) > 1:
@@ -976,6 +1160,7 @@ def init_state():
         "story_sound_played":  False,  # prevents badge sound replaying on every render
         "level_up_pending":    None,
         "milestone_pending":   None,   # score milestone (5, 10, 15...) waiting to be shown
+        "current_word_tries":  0,      # wrong attempts on current word; resets on new word
     }
     for k, v in defaults.items():
         st.session_state.setdefault(k, v)
@@ -1007,6 +1192,7 @@ def pick_next_word():
     if st.session_state.idx >= len(wl):
         random.shuffle(wl)
         st.session_state.idx = 0
+    st.session_state.current_word_tries = 0
     return w
 
 
@@ -1537,6 +1723,7 @@ def handle_answer(word_dict, category, correct, heard):
     else:
         st.session_state.feedback = ("wrong", heard)
         play_sound("wrong")
+        st.session_state.current_word_tries += 1
         ww = st.session_state.wrong_words
         if word_dict not in ww:
             ww.append(word_dict)
@@ -1824,24 +2011,171 @@ else:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # ── Sentence Build-Up Mode (only for 📝 Sentences category) ──────────────
+    if st.session_state.category == "📝 Sentences":
+        if st.session_state.current_word is None:
+            st.session_state.current_word = pick_next_word()
+            words = st.session_state.current_word["text"].split()
+            # Build checkpoint steps: [1 word], [1+2 words], ..., [all words]
+            if len(words) <= 3:
+                steps = [words]
+            elif len(words) <= 5:
+                steps = [words[:2], words[:len(words)//2], words]
+            else:
+                steps = []
+                for i in range(2, len(words) + 1, 2):
+                    steps.append(words[:i])
+                if steps[-1] != words:
+                    steps.append(words)
+            st.session_state["buildup_steps"] = steps
+            st.session_state["buildup_step"] = 0
+            st.session_state.pop("buildup_autoplayed", None)
+
+        current   = st.session_state.current_word
+        steps     = st.session_state.get("buildup_steps", [current["text"].split()])
+        step_idx  = st.session_state.get("buildup_step", 0)
+        step_idx  = min(step_idx, len(steps) - 1)
+        partial   = " ".join(steps[step_idx])
+        all_words = current["text"].split()
+        total_steps = len(steps)
+        is_final    = step_idx == total_steps - 1
+
+        # Step progress bar
+        prog_html = "".join(
+            f"<span style='font-size:18px;'>{'🟠' if i == step_idx else ('✅' if i < step_idx else '⚪')}</span>"
+            for i in range(total_steps)
+        )
+        st.markdown(
+            f"<div style='text-align:center;margin-bottom:8px;'>{prog_html}"
+            f"<span style='font-size:14px;color:#9A7A5A;margin-left:8px;'>Step {step_idx+1} of {total_steps}</span></div>",
+            unsafe_allow_html=True,
+        )
+
+        # Show sentence with current words highlighted and future words greyed
+        highlighted = ""
+        for i, w in enumerate(all_words):
+            if i < len(steps[step_idx]):
+                highlighted += f"<b style='color:#3D2B1F;'>{w.capitalize() if i==0 else w}</b> "
+            else:
+                highlighted += f"<span style='color:#D0C0B0;'>{w}</span> "
+        st.markdown(
+            f"<div class='word-card'>"
+            f"<div style='font-size:48px;margin-bottom:8px;'>{current['emoji']}</div>"
+            f"<div style='font-size:{'28px' if len(partial)>20 else '36px'};line-height:1.4;padding:0 10px;'>{highlighted.strip()}</div>"
+            f"<div style='font-size:16px;color:#9A7A5A;margin-top:8px;'>Say the {'bold' if not is_final else 'whole sentence'} part!</div>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+        # Auto-speak partial on each step
+        auto_key = f"buildup_{current['text']}_{step_idx}"
+        if st.session_state.get("buildup_autoplayed") != auto_key:
+            speak_then_record(partial)
+            st.session_state.buildup_autoplayed = auto_key
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        c1h, c2h, c3h = st.columns([1, 2, 1])
+        with c2h:
+            if st.button("🔊  Hear it!", use_container_width=True, key="buildup_hear"):
+                speak_instant(partial)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(
+            "<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+            "👇 Tap the mic, then say the words!</div>",
+            unsafe_allow_html=True,
+        )
+        inject_mic_listener()
+        st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
+        audio_bytes_bd = audio_recorder(
+            text="", recording_color="#C17A4A", neutral_color="#BBA890",
+            icon_size="3x", pause_threshold=0.7,
+            key=f"buildup_{st.session_state.score}_{st.session_state.attempts}_{step_idx}",
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        if audio_bytes_bd:
+            playback_child_voice(audio_bytes_bd)
+            recognized_bd, err_bd = try_recognize(audio_bytes_bd)
+            if recognized_bd:
+                if is_correct(recognized_bd, partial):
+                    if is_final:
+                        # Full sentence complete!
+                        handle_answer(current, st.session_state.category, True, recognized_bd)
+                        st.balloons()
+                        st.markdown(
+                            "<div class='fb-yes'>🎉 You said it ALL! Amazing! 🎉</div>",
+                            unsafe_allow_html=True,
+                        )
+                        if st.button("➡️  Next sentence!", key="buildup_next_final", use_container_width=True):
+                            st.session_state.current_word = None
+                            st.session_state.feedback = None
+                            st.rerun()
+                    else:
+                        # Advance to next step
+                        st.session_state.buildup_step = step_idx + 1
+                        next_partial = " ".join(steps[step_idx + 1])
+                        st.markdown(
+                            f"<div class='fb-yes'>✅ Great! Now say: <b>{next_partial}</b></div>",
+                            unsafe_allow_html=True,
+                        )
+                        st.session_state.pop("buildup_autoplayed", None)
+                        st.rerun()
+                else:
+                    st.session_state.current_word_tries += 1
+                    tries_bd = st.session_state.current_word_tries
+                    speak_instant(partial)
+                    circles_bd = "".join(
+                        "🟠" if i < tries_bd else "⚪"
+                        for i in range(3)
+                    )
+                    st.markdown(
+                        f"<div class='fb-no'>Almost! Say: <b style='color:#C17A4A;'>{partial}</b><br>"
+                        f"<span style='font-size:22px;'>{circles_bd}</span></div>",
+                        unsafe_allow_html=True,
+                    )
+                    if tries_bd >= 3:
+                        st.session_state.buildup_step = step_idx + 1 if not is_final else step_idx
+                        st.session_state.current_word_tries = 0
+                        st.rerun()
+            elif err_bd == "quiet":
+                st.markdown("<div class='fb-no'>🙈 I didn't hear anything! Speak louder! 🌈</div>", unsafe_allow_html=True)
+            else:
+                st.markdown("<div class='fb-no'>Oops! Try again! 🌈</div>", unsafe_allow_html=True)
+
+        c1b, c2b, c3b = st.columns([1, 2, 1])
+        with c2b:
+            if st.button("⏭️  Skip sentence", use_container_width=True, key="buildup_skip"):
+                st.session_state.current_word = None
+                st.session_state.feedback = None
+                st.rerun()
+        st.stop()
+    # ── End Sentence Build-Up ─────────────────────────────────────────────────
+
     # Lock in the current word for this turn — only advance when explicitly requested
     if st.session_state.current_word is None:
         st.session_state.current_word = pick_next_word()
         st.session_state.pop("last_autoplayed", None)  # force auto-play for new word
     current = st.session_state.current_word
 
-    # Auto-speak the word when it first appears
+    # Auto-speak the word with countdown when it first appears (Echo Mode)
     if st.session_state.get("last_autoplayed") != current["text"]:
-        speak_instant(current["text"])
+        speak_then_record(current["text"])
         st.session_state.last_autoplayed = current["text"]
 
     txt_len = len(current['text'])
     txt_size = "26px" if txt_len > 20 else "36px" if txt_len > 10 else "48px"
     txt_spacing = "0px" if txt_len > 10 else "3px"
+    syllable_hint = SYLLABLES.get(current["text"].lower(), "")
+    syllable_html = (
+        f"<div style='font-size:17px;color:#B08060;letter-spacing:3px;margin-top:4px;font-weight:600;'>"
+        f"{syllable_hint}</div>"
+    ) if syllable_hint else ""
     st.markdown(f"""
     <div class='word-card'>
         <div class='word-emoji'>{current['emoji']}</div>
         <div class='word-text' style='font-size:{txt_size};letter-spacing:{txt_spacing};'>{current['text'].capitalize()}</div>
+        {syllable_html}
     </div>""", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -1888,6 +2222,7 @@ else:
         else:
             # Auto-replay the word and show encouragement
             speak_instant(current["text"])
+            tries = st.session_state.current_word_tries
             encouragements = [
                 "Almost! You can do it! 💪",
                 "So close! Try one more time! 🌟",
@@ -1895,12 +2230,28 @@ else:
                 "Nearly there! Give it another go! 🌈",
             ]
             enc = encouragements[st.session_state.attempts % len(encouragements)]
+            # 3-attempt circles
+            circles = "".join(
+                "<span style='font-size:24px;'>🟠</span>" if i < tries else "<span style='font-size:24px;color:#DDD;'>⚪</span>"
+                for i in range(3)
+            )
             st.markdown(
                 f"<div class='fb-no'>{enc}<br>"
                 f"<span style='font-size:42px;font-weight:900;color:#C17A4A;'>"
-                f"{current['emoji']} {current['text'].capitalize()}</span></div>",
+                f"{current['emoji']} {current['text'].capitalize()}</span><br>"
+                f"<div style='margin-top:8px;'>{circles}</div></div>",
                 unsafe_allow_html=True,
             )
+            # After 3 wrong tries, auto-advance
+            if tries >= 3:
+                st.markdown(
+                    "<div style='text-align:center;font-size:22px;color:#9A7A5A;margin-top:6px;'>"
+                    "Let's come back to this one! 💪</div>",
+                    unsafe_allow_html=True,
+                )
+                st.session_state.feedback     = None
+                st.session_state.current_word = None
+                st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1, 2, 1])
