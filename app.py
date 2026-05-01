@@ -179,6 +179,28 @@ WEATHER = [
     {"text": "cold",     "emoji": "🥶"},
     {"text": "storm",    "emoji": "🌪️"},
 ]
+TWO_WORD_PHRASES = [
+    {"text": "big dog",       "emoji": "🐕"},
+    {"text": "red apple",     "emoji": "🍎"},
+    {"text": "fast car",      "emoji": "🏎️"},
+    {"text": "blue sky",      "emoji": "🌌"},
+    {"text": "hot sun",       "emoji": "🌞"},
+    {"text": "cold water",    "emoji": "🧊"},
+    {"text": "little cat",    "emoji": "🐱"},
+    {"text": "pretty flower", "emoji": "🌸"},
+    {"text": "happy baby",    "emoji": "👶"},
+    {"text": "big hug",       "emoji": "🤗"},
+    {"text": "yummy cake",    "emoji": "🎂"},
+    {"text": "soft pillow",   "emoji": "😴"},
+    {"text": "bouncy ball",   "emoji": "⚽"},
+    {"text": "bright star",   "emoji": "⭐"},
+    {"text": "silly face",    "emoji": "🤪"},
+    {"text": "tiny bird",     "emoji": "🐦"},
+    {"text": "fluffy cloud",  "emoji": "☁️"},
+    {"text": "green tree",    "emoji": "🌳"},
+    {"text": "sweet honey",   "emoji": "🍯"},
+    {"text": "noisy frog",    "emoji": "🐸"},
+]
 EASY_PHRASES = [
     {"text": "Hello",        "emoji": "👋"},
     {"text": "Bye bye",      "emoji": "👋"},
@@ -247,6 +269,7 @@ ALL_CATEGORIES = {
     "👕 Clothes":     CLOTHES,
     "🚗 Vehicles":    VEHICLES,
     "🌦️ Weather":     WEATHER,
+    "🗣️ Two Words":   TWO_WORD_PHRASES,
     "💬 Easy Phrases": EASY_PHRASES,
     "📝 Sentences":   SENTENCES,
 }
@@ -712,6 +735,107 @@ def speak_story_step(narration, word):
     components.html(f"<script>{js}</script>", height=0)
 
 
+def speak_slow(word):
+    """Speak a word very slowly so every sound is clear."""
+    safe = word.replace("\\", "\\\\").replace("'", "\\'")
+    js = f"""
+    (function() {{
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance('{safe}');
+        u.lang = 'en-US'; u.rate = 0.45; u.pitch = 1.1;
+        var vs = window.speechSynthesis.getVoices();
+        var en = vs.filter(v => v.lang.startsWith('en'));
+        var pick = en.find(v => ['Zira','Aria','Jenny','Google','Ana'].some(n => v.name.includes(n))) || en[0];
+        if (pick) u.voice = pick;
+        function go() {{ window.speechSynthesis.speak(u); }}
+        if (vs.length > 0) {{ go(); }} else {{ window.speechSynthesis.onvoiceschanged = go; }}
+    }})();
+    """
+    components.html(f"<script>{js}</script>", height=0)
+
+
+def speak_syllables_animated(word, container_id):
+    """Speak each syllable in sequence, lighting up syllable dots via JS."""
+    parts = SYLLABLES.get(word.lower(), "")
+    if not parts:
+        speak_slow(word)
+        return
+    sylls = [s.strip() for s in parts.split("·")]
+    safe_sylls = [s.replace("'", "\\'") for s in sylls]
+    sylls_js = "[" + ",".join(f"'{s}'" for s in safe_sylls) + "]"
+    js = f"""
+    (function() {{
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        var sylls = {sylls_js};
+        var cid = '{container_id}';
+        function getVoice() {{
+            var vs = window.speechSynthesis.getVoices();
+            var en = vs.filter(v => v.lang.startsWith('en'));
+            return en.find(v => ['Zira','Aria','Jenny','Google','Ana'].some(n => v.name.includes(n))) || en[0];
+        }}
+        function speakSyll(i) {{
+            if (i >= sylls.length) {{
+                // After all syllables, speak full word slowly
+                setTimeout(function() {{
+                    var u = new SpeechSynthesisUtterance('{word.replace("'", "\\'")}');
+                    u.lang='en-US'; u.rate=0.60; u.pitch=1.05;
+                    var v=getVoice(); if(v) u.voice=v;
+                    window.speechSynthesis.speak(u);
+                }}, 500);
+                return;
+            }}
+            // Light up dot i in parent document
+            var pd = window.parent.document;
+            var dot = pd.getElementById(cid + '_dot_' + i);
+            if (dot) {{
+                dot.style.background = '#C17A4A';
+                dot.style.transform = 'scale(1.5)';
+                dot.style.transition = 'all 0.2s';
+            }}
+            var u = new SpeechSynthesisUtterance(sylls[i]);
+            u.lang='en-US'; u.rate=0.65; u.pitch=1.1;
+            var v=getVoice(); if(v) u.voice=v;
+            u.onend = function() {{
+                if (dot) {{
+                    setTimeout(function(){{
+                        dot.style.background='#D0B090';
+                        dot.style.transform='scale(1)';
+                    }}, 300);
+                }}
+                setTimeout(function() {{ speakSyll(i+1); }}, 600);
+            }};
+            window.speechSynthesis.speak(u);
+        }}
+        function go() {{ speakSyll(0); }}
+        if (window.speechSynthesis.getVoices().length > 0) {{ go(); }}
+        else {{ window.speechSynthesis.onvoiceschanged = go; }}
+    }})();
+    """
+    components.html(f"<script>{js}</script>", height=0)
+
+
+def syllable_dots_html(word, container_id):
+    """Return HTML for animated syllable dots (grey → orange when spoken)."""
+    parts = SYLLABLES.get(word.lower(), "")
+    if not parts:
+        return ""
+    sylls = [s.strip() for s in parts.split("·")]
+    dots = ""
+    for i, s in enumerate(sylls):
+        dots += (
+            f"<span id='{container_id}_dot_{i}' style='"
+            f"display:inline-block;background:#D0B090;border-radius:50%;"
+            f"width:14px;height:14px;margin:0 4px;vertical-align:middle;'></span>"
+            f"<span style='font-size:20px;font-weight:800;color:#C17A4A;"
+            f"letter-spacing:2px;vertical-align:middle;'>{s.upper()}</span>"
+        )
+        if i < len(sylls) - 1:
+            dots += "<span style='font-size:20px;color:#BBA890;vertical-align:middle;'> · </span>"
+    return f"<div style='text-align:center;margin:10px 0 4px;line-height:2;'>{dots}</div>"
+
+
 def speak_then_record(word):
     """Speak word slowly, show 3-2-1 countdown, then auto-click the mic button."""
     safe = word.replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ")
@@ -1161,6 +1285,11 @@ def init_state():
         "level_up_pending":    None,
         "milestone_pending":   None,   # score milestone (5, 10, 15...) waiting to be shown
         "current_word_tries":  0,      # wrong attempts on current word; resets on new word
+        "last_recording":      None,   # last audio_bytes recorded by child (for playback comparison)
+        "echo_autoplayed":     None,   # key for echo mode auto-speak dedup
+        "fill_current":        None,   # current sentence for fill-in mode
+        "syllable_current":    None,   # current word for syllable trainer
+        "syllable_autoplayed": None,   # dedup key for syllable trainer auto-speak
     }
     for k, v in defaults.items():
         st.session_state.setdefault(k, v)
@@ -1689,6 +1818,20 @@ with m3:
         st.session_state.mode = "story"; st.session_state.story_key = None
         st.session_state.feedback = None; st.rerun()
 
+m4, m5, m6 = st.columns(3)
+with m4:
+    if st.button("🎤  Echo", use_container_width=True):
+        st.session_state.mode = "echo"; st.session_state.feedback = None
+        st.session_state.current_word = None; st.rerun()
+with m5:
+    if st.button("✏️  Fill In", use_container_width=True):
+        st.session_state.mode = "fillin"; st.session_state.feedback = None
+        st.session_state.fill_current = None; st.rerun()
+with m6:
+    if st.button("🎵  Syllables", use_container_width=True):
+        st.session_state.mode = "syllables"; st.session_state.feedback = None
+        st.session_state.syllable_current = None; st.rerun()
+
 st.markdown("---")
 
 
@@ -1888,12 +2031,28 @@ if st.session_state.mode == "story":
                     "Nearly there! Give it another go! 🌈",
                 ]
                 enc = encouragements[st.session_state.attempts % len(encouragements)]
+                syll_hint_s = SYLLABLES.get(step["text"].lower(), "")
+                syll_section_s = ""
+                if syll_hint_s and "·" in syll_hint_s:
+                    syll_section_s = (
+                        f"<div style='margin-top:8px;font-size:14px;color:#9A7A5A;font-weight:700;'>Parts:</div>"
+                        + syllable_dots_html(step["text"], f"story_syll_{st.session_state.attempts}")
+                    )
                 st.markdown(
                     f"<div class='fb-no'>{enc}<br>"
                     f"<span style='font-size:42px;font-weight:900;color:{story_accent};'>"
-                    f"{step['emoji']} {txt_display}</span></div>",
+                    f"{step['emoji']} {txt_display}</span>"
+                    f"{syll_section_s}</div>",
                     unsafe_allow_html=True,
                 )
+                ss1, ss2 = st.columns(2)
+                with ss1:
+                    if st.button("🐢 Hear slowly", use_container_width=True, key=f"story_slow_{st.session_state.attempts}"):
+                        speak_slow(step["text"])
+                with ss2:
+                    if syll_hint_s and "·" in syll_hint_s:
+                        if st.button("👏 Hear parts", use_container_width=True, key=f"story_sylls_{st.session_state.attempts}"):
+                            speak_syllables_animated(step["text"], f"story_syll_{st.session_state.attempts}")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1991,9 +2150,383 @@ elif st.session_state.mode == "choice":
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# ECHO MODE — hear it, then repeat it (any attempt celebrated)
+# ══════════════════════════════════════════════════════════════════════════════
+elif st.session_state.mode == "echo":
+    st.markdown(
+        "<div style='text-align:center;font-size:22px;font-weight:800;color:#7A5C3A;margin-bottom:4px;'>"
+        "🎤 Echo Mode — Listen, then say it back!</div>"
+        "<div style='text-align:center;font-size:15px;color:#9A7A5A;margin-bottom:10px;'>"
+        "Every try gets a star ⭐</div>",
+        unsafe_allow_html=True,
+    )
+    # Category selector
+    all_cats = list(get_all_categories().keys())
+    for row_start in range(0, len(all_cats), 4):
+        row = all_cats[row_start:row_start + 4]
+        rcols = st.columns(len(row))
+        for col, cat in zip(rcols, row):
+            with col:
+                active = cat == st.session_state.category
+                wrapper = "cat-btn-active" if active else "cat-btn"
+                st.markdown(f"<div class='{wrapper}'>", unsafe_allow_html=True)
+                if st.button(cat, use_container_width=True, key=f"echo_cat_{cat}"):
+                    load_category(cat)
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.session_state.current_word is None:
+        st.session_state.current_word = pick_next_word()
+        st.session_state.pop("echo_autoplayed", None)
+    echo_word = st.session_state.current_word
+
+    txt_len = len(echo_word["text"])
+    txt_size = "26px" if txt_len > 20 else "36px" if txt_len > 10 else "52px"
+    st.markdown(f"""
+    <div class='word-card'>
+        <div class='word-emoji'>{echo_word['emoji']}</div>
+        <div class='word-text' style='font-size:{txt_size};'>{echo_word['text'].capitalize()}</div>
+        <div style='font-size:16px;color:#9A7A5A;font-weight:700;margin-top:6px;'>
+            Listen carefully, then say it! 👂
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    # Auto-speak on first appearance
+    echo_key = f"echo_{echo_word['text']}_{st.session_state.score}"
+    if st.session_state.get("echo_autoplayed") != echo_key:
+        speak_then_record(echo_word["text"])
+        st.session_state.echo_autoplayed = echo_key
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    c1h, c2h, c3h = st.columns([1, 2, 1])
+    with c2h:
+        if st.button("🔊  Hear it again!", use_container_width=True, key="echo_hear"):
+            speak_instant(echo_word["text"])
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+        "👇 Now YOU say it!</div>",
+        unsafe_allow_html=True,
+    )
+    inject_mic_listener()
+    st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
+    echo_audio = audio_recorder(
+        text="", recording_color="#C17A4A", neutral_color="#BBA890",
+        icon_size="3x", pause_threshold=0.7,
+        key=f"echo_{st.session_state.category}_{st.session_state.score}_{st.session_state.attempts}",
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if echo_audio:
+        st.session_state.last_recording = echo_audio
+        recognized_e, err_e = try_recognize(echo_audio)
+        # In Echo mode: celebrate any recognisable attempt; skip silently if nothing heard
+        if recognized_e:
+            correct_e = is_correct(recognized_e, echo_word["text"])
+            # Always celebrate — Echo mode is about confidence, not perfection
+            st.session_state.score += 1
+            play_sound("correct")
+            st.balloons()
+            show_splash("⭐", "Great try!")
+            st.markdown(
+                f"<div class='fb-yes'>⭐ I heard: <b>\"{recognized_e}\"</b><br>"
+                f"The word is: <b style='color:#C17A4A;font-size:32px;'>{echo_word['text'].capitalize()}</b></div>",
+                unsafe_allow_html=True,
+            )
+            # Voice comparison
+            ec1, ec2 = st.columns(2)
+            with ec1:
+                if st.button("🎤 Hear me", use_container_width=True, key="echo_hear_me"):
+                    playback_child_voice(echo_audio)
+            with ec2:
+                if st.button("🔊 Hear word", use_container_width=True, key="echo_hear_word"):
+                    speak_instant(echo_word["text"])
+        elif err_e == "quiet":
+            st.markdown(
+                "<div class='fb-no'>🙈 I didn't hear you! Speak louder! 🌈</div>",
+                unsafe_allow_html=True,
+            )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    c1e, c2e, c3e = st.columns([1, 2, 1])
+    with c2e:
+        if st.button("➡️  Next word!", use_container_width=True, key="echo_next"):
+            st.session_state.current_word = None
+            st.session_state.feedback = None
+            st.rerun()
+    with c3e:
+        if st.button("⏭️  Skip", use_container_width=True, key="echo_skip"):
+            st.session_state.current_word = None
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# FILL-IN MODE — game reads sentence, child says the last word
+# ══════════════════════════════════════════════════════════════════════════════
+elif st.session_state.mode == "fillin":
+    st.markdown(
+        "<div style='text-align:center;font-size:22px;font-weight:800;color:#7A5C3A;margin-bottom:4px;'>"
+        "✏️ Fill In — say the missing word!</div>"
+        "<div style='text-align:center;font-size:15px;color:#9A7A5A;margin-bottom:10px;'>"
+        "Listen to the sentence, then say the last word 🎤</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Pick a sentence if we don't have one
+    if st.session_state.fill_current is None:
+        all_sents = EASY_PHRASES + SENTENCES
+        st.session_state.fill_current = random.choice(all_sents)
+        st.session_state.pop("fill_autoplayed", None)
+
+    sent = st.session_state.fill_current
+    full_text = sent["text"]
+    words = full_text.split()
+    last_word = words[-1]
+    partial = " ".join(words[:-1])
+
+    # Display sentence with blank at end
+    word_html = ""
+    for i, w in enumerate(words):
+        if i < len(words) - 1:
+            word_html += f"<span style='color:#3D2B1F;font-weight:800;'>{w.capitalize() if i == 0 else w} </span>"
+        else:
+            word_html += "<span style='color:#C17A4A;font-size:140%;font-weight:900;letter-spacing:2px;'>___</span>"
+
+    st.markdown(f"""
+    <div class='word-card'>
+        <div style='font-size:52px;margin-bottom:10px;'>{sent['emoji']}</div>
+        <div style='font-size:26px;line-height:1.7;padding:0 8px;'>{word_html}</div>
+        <div style='font-size:15px;color:#9A7A5A;font-weight:700;margin-top:8px;'>
+            What is the last word?
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    # Auto-speak partial sentence on first appearance
+    fill_key = f"fill_{full_text}"
+    if st.session_state.get("fill_autoplayed") != fill_key:
+        speak_instant(partial)
+        st.session_state.fill_autoplayed = fill_key
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    fc1, fc2, fc3 = st.columns([1, 2, 1])
+    with fc2:
+        if st.button("🔊  Hear the sentence", use_container_width=True, key="fill_hear"):
+            speak_instant(partial)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        f"<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+        f"👇 Say the last word!</div>",
+        unsafe_allow_html=True,
+    )
+    inject_mic_listener()
+    st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
+    fill_audio = audio_recorder(
+        text="", recording_color="#C17A4A", neutral_color="#BBA890",
+        icon_size="3x", pause_threshold=0.7,
+        key=f"fill_{st.session_state.score}_{st.session_state.attempts}",
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if fill_audio:
+        st.session_state.last_recording = fill_audio
+        playback_child_voice(fill_audio)
+        recognized_f, err_f = try_recognize(fill_audio)
+        if recognized_f:
+            if is_correct(recognized_f, last_word):
+                handle_answer(sent, "Fill In", True, recognized_f)
+                st.markdown(
+                    f"<div class='fb-yes'>🎉 YES! <b style='color:#C17A4A;font-size:32px;'>"
+                    f"{last_word.capitalize()}</b>! 🎉<br>"
+                    f"<span style='font-size:20px;'>{full_text.capitalize()}</span></div>",
+                    unsafe_allow_html=True,
+                )
+                # Voice comparison
+                fbc1, fbc2 = st.columns(2)
+                with fbc1:
+                    if st.button("🎤 Hear me", use_container_width=True, key="fill_hear_me"):
+                        playback_child_voice(fill_audio)
+                with fbc2:
+                    if st.button("🔊 Hear word", use_container_width=True, key="fill_hear_word"):
+                        speak_instant(last_word)
+                if st.button("➡️  Next sentence!", use_container_width=True, key="fill_next_correct"):
+                    st.session_state.fill_current = None
+                    st.rerun()
+            else:
+                speak_instant(last_word)
+                st.session_state.attempts += 1
+                st.markdown(
+                    f"<div class='fb-no'>Almost! The last word is: "
+                    f"<b style='color:#C17A4A;font-size:36px;'>{last_word.capitalize()}</b> {sent['emoji']}<br>"
+                    f"Try again! 💪</div>",
+                    unsafe_allow_html=True,
+                )
+        elif err_f == "quiet":
+            st.markdown(
+                "<div class='fb-no'>🙈 I didn't hear anything! Speak louder! 🌈</div>",
+                unsafe_allow_html=True,
+            )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    fb1, fb2, fb3 = st.columns([1, 2, 1])
+    with fb2:
+        if st.button("➡️  Next sentence", use_container_width=True, key="fill_next"):
+            st.session_state.fill_current = None
+            st.session_state.feedback = None
+            st.rerun()
+    with fb3:
+        if st.button("⏭️  Skip", use_container_width=True, key="fill_skip"):
+            st.session_state.fill_current = None
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SYLLABLE TRAINER — clap and say each syllable, then the full word
+# ══════════════════════════════════════════════════════════════════════════════
+elif st.session_state.mode == "syllables":
+    st.markdown(
+        "<div style='text-align:center;font-size:22px;font-weight:800;color:#7A5C3A;margin-bottom:4px;'>"
+        "🎵 Syllable Trainer — clap every part!</div>"
+        "<div style='text-align:center;font-size:15px;color:#9A7A5A;margin-bottom:10px;'>"
+        "Listen to each part, clap along 👏 then say the whole word!</div>",
+        unsafe_allow_html=True,
+    )
+    # Category selector
+    all_cats = list(get_all_categories().keys())
+    for row_start in range(0, len(all_cats), 4):
+        row = all_cats[row_start:row_start + 4]
+        rcols = st.columns(len(row))
+        for col, cat in zip(rcols, row):
+            with col:
+                active = cat == st.session_state.category
+                wrapper = "cat-btn-active" if active else "cat-btn"
+                st.markdown(f"<div class='{wrapper}'>", unsafe_allow_html=True)
+                if st.button(cat, use_container_width=True, key=f"syll_cat_{cat}"):
+                    load_category(cat)
+                    st.session_state.syllable_current = None
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Pick a word — prefer words that have syllable data
+    if st.session_state.syllable_current is None:
+        wl = st.session_state.word_list or list(get_all_categories().get(st.session_state.category, []))
+        syll_words = [w for w in wl if w["text"].lower() in SYLLABLES and "·" in SYLLABLES.get(w["text"].lower(), "")]
+        pool = syll_words if syll_words else wl
+        if pool:
+            st.session_state.syllable_current = random.choice(pool)
+        else:
+            st.session_state.syllable_current = pick_next_word()
+        st.session_state.syllable_autoplayed = None
+
+    sw = st.session_state.syllable_current
+    sw_text = sw["text"]
+    syll_hint = SYLLABLES.get(sw_text.lower(), "")
+    parts = [s.strip() for s in syll_hint.split("·")] if syll_hint else [sw_text]
+    n_sylls = len(parts)
+
+    # Clap emojis — one per syllable
+    clap_html = "  ".join(["👏"] * n_sylls)
+
+    # Word card
+    txt_len = len(sw_text)
+    txt_size = "26px" if txt_len > 12 else "48px"
+    syll_dots = syllable_dots_html(sw_text, "syll_trainer")
+    st.markdown(f"""
+    <div class='word-card'>
+        <div style='font-size:72px;margin-bottom:6px;'>{sw['emoji']}</div>
+        <div style='font-size:{txt_size};font-weight:900;color:#3D2B1F;'>{sw_text.capitalize()}</div>
+        {syll_dots}
+        <div style='font-size:24px;margin-top:8px;letter-spacing:8px;'>{clap_html}</div>
+        <div style='font-size:15px;color:#9A7A5A;font-weight:700;margin-top:6px;'>
+            {n_sylls} clap{'s' if n_sylls != 1 else ''}!
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    # Auto-speak syllables on first appearance
+    syll_key = f"syll_{sw_text}"
+    if st.session_state.get("syllable_autoplayed") != syll_key:
+        speak_syllables_animated(sw_text, "syll_trainer")
+        st.session_state.syllable_autoplayed = syll_key
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    sc1, sc2, sc3 = st.columns(3)
+    with sc1:
+        if st.button("👏 Clap it!", use_container_width=True, key="syll_clap"):
+            speak_syllables_animated(sw_text, "syll_trainer")
+    with sc2:
+        if st.button("🔊 Full word", use_container_width=True, key="syll_full"):
+            speak_slow(sw_text)
+    with sc3:
+        if st.button("⏭️ Next word", use_container_width=True, key="syll_next_top"):
+            st.session_state.syllable_current = None
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='text-align:center;font-size:17px;color:#9A7A5A;font-weight:700;margin-bottom:4px;'>"
+        "👇 Now say the whole word!</div>",
+        unsafe_allow_html=True,
+    )
+    inject_mic_listener()
+    st.markdown("<div class='mic-ring'>", unsafe_allow_html=True)
+    syll_audio = audio_recorder(
+        text="", recording_color="#C17A4A", neutral_color="#BBA890",
+        icon_size="3x", pause_threshold=0.7,
+        key=f"syll_{st.session_state.score}_{st.session_state.attempts}",
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if syll_audio:
+        st.session_state.last_recording = syll_audio
+        playback_child_voice(syll_audio)
+        recognized_s, err_s = try_recognize(syll_audio)
+        if recognized_s:
+            if is_correct(recognized_s, sw_text):
+                handle_answer(sw, st.session_state.category, True, recognized_s)
+                st.markdown(
+                    f"<div class='fb-yes'>🎉 Amazing! <b style='color:#C17A4A;font-size:36px;'>"
+                    f"{sw_text.capitalize()}</b>! You nailed it! 🎉</div>",
+                    unsafe_allow_html=True,
+                )
+                svc1, svc2 = st.columns(2)
+                with svc1:
+                    if st.button("🎤 Hear me", use_container_width=True, key="syll_hear_me"):
+                        playback_child_voice(syll_audio)
+                with svc2:
+                    if st.button("🔊 Hear word", use_container_width=True, key="syll_hear_word"):
+                        speak_slow(sw_text)
+                if st.button("➡️  Next word!", use_container_width=True, key="syll_next_correct"):
+                    st.session_state.syllable_current = None
+                    st.rerun()
+            else:
+                speak_syllables_animated(sw_text, "syll_trainer")
+                st.markdown(
+                    f"<div class='fb-no'>Almost! Let's hear the parts again 👏<br>"
+                    f"{syll_dots}</div>",
+                    unsafe_allow_html=True,
+                )
+        elif err_s == "quiet":
+            st.markdown(
+                "<div class='fb-no'>🙈 I didn't hear you! Try a bit louder! 🌈</div>",
+                unsafe_allow_html=True,
+            )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    sb1, sb2 = st.columns(2)
+    with sb1:
+        if st.button("➡️  Next word!", use_container_width=True, key="syll_next_bottom"):
+            st.session_state.syllable_current = None
+            st.session_state.feedback = None
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # PRACTICE MODE
 # ══════════════════════════════════════════════════════════════════════════════
-else:
+elif st.session_state.mode == "practice":
     # Category selector — styled cards, 4 per row
     all_cats = list(get_all_categories().keys())
     for row_start in range(0, len(all_cats), 4):
@@ -2201,6 +2734,7 @@ else:
     st.markdown("</div>", unsafe_allow_html=True)
 
     if audio_bytes:
+        st.session_state.last_recording = audio_bytes
         playback_child_voice(audio_bytes)
         recognized, err = try_recognize(audio_bytes)
         if recognized:
@@ -2219,6 +2753,15 @@ else:
         if kind == "correct":
             st.markdown(f"<div class='celebrate-emoji'>{current['emoji']}</div>", unsafe_allow_html=True)
             st.markdown(f"<div class='fb-yes'>🎉 YES! {current['text'].capitalize()}! 🎉</div>", unsafe_allow_html=True)
+            # Voice comparison buttons
+            if st.session_state.last_recording:
+                vc1, vc2 = st.columns(2)
+                with vc1:
+                    if st.button("🎤 Hear me", use_container_width=True, key="prac_hear_me_ok"):
+                        playback_child_voice(st.session_state.last_recording)
+                with vc2:
+                    if st.button("🔊 Hear word", use_container_width=True, key="prac_hear_word_ok"):
+                        speak_instant(current["text"])
         else:
             # Auto-replay the word and show encouragement
             speak_instant(current["text"])
@@ -2230,18 +2773,44 @@ else:
                 "Nearly there! Give it another go! 🌈",
             ]
             enc = encouragements[st.session_state.attempts % len(encouragements)]
-            # 3-attempt circles
             circles = "".join(
                 "<span style='font-size:24px;'>🟠</span>" if i < tries else "<span style='font-size:24px;color:#DDD;'>⚪</span>"
                 for i in range(3)
             )
+            # Syllable breakdown for multi-syllable words
+            syll_hint = SYLLABLES.get(current["text"].lower(), "")
+            syll_section = ""
+            if syll_hint and "·" in syll_hint:
+                syll_section = (
+                    f"<div style='margin-top:10px;font-size:15px;color:#9A7A5A;font-weight:700;'>Parts:</div>"
+                    + syllable_dots_html(current["text"], f"prac_syll_{st.session_state.attempts}")
+                )
             st.markdown(
                 f"<div class='fb-no'>{enc}<br>"
                 f"<span style='font-size:42px;font-weight:900;color:#C17A4A;'>"
                 f"{current['emoji']} {current['text'].capitalize()}</span><br>"
+                f"{syll_section}"
                 f"<div style='margin-top:8px;'>{circles}</div></div>",
                 unsafe_allow_html=True,
             )
+            # Slow + syllable replay buttons
+            ps1, ps2 = st.columns(2)
+            with ps1:
+                if st.button("🐢 Hear slowly", use_container_width=True, key=f"prac_slow_{st.session_state.attempts}"):
+                    speak_slow(current["text"])
+            with ps2:
+                if syll_hint and "·" in syll_hint:
+                    if st.button("👏 Hear parts", use_container_width=True, key=f"prac_sylls_{st.session_state.attempts}"):
+                        speak_syllables_animated(current["text"], f"prac_syll_{st.session_state.attempts}")
+            # Voice comparison
+            if st.session_state.last_recording:
+                vc1, vc2 = st.columns(2)
+                with vc1:
+                    if st.button("🎤 Hear me", use_container_width=True, key=f"prac_hear_me_{st.session_state.attempts}"):
+                        playback_child_voice(st.session_state.last_recording)
+                with vc2:
+                    if st.button("🔊 Hear word", use_container_width=True, key=f"prac_hear_word_{st.session_state.attempts}"):
+                        speak_instant(current["text"])
             # After 3 wrong tries, auto-advance
             if tries >= 3:
                 st.markdown(
